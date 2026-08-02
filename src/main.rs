@@ -28,7 +28,7 @@ fn main() {
     match c.cmd {
         Cmds::Projects { action } => match action {
             ProjectsAction::Search { query, sort } => {
-                let response = match api::projects::search(&query, sort) {
+                let response = match api::projects::search(&query, sort, 0, 1, &[]) {
                     Ok(r) => r,
                     Err(e) => {
                         println!("{:?}", e);
