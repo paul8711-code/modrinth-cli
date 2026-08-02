@@ -22,9 +22,19 @@ use clap::{Parser, Subcommand};
 #[command(author, version, about)]
 pub struct Cli {
     #[command(subcommand)]
-    pub commands: Commands,
+    pub cmd: Cmds,
 }
 
 // One command for each modrinth api endpoint (some might get merged/renamed)
 #[derive(Subcommand)]
-pub enum Commands {}
+pub enum Cmds {
+    Projects {
+        #[command(subcommand)]
+        action: ProjectsAction,
+    },
+}
+
+#[derive(Subcommand)]
+pub enum ProjectsAction {
+    Search { query: String },
+}

@@ -17,37 +17,26 @@
 */
 
 use clap::Parser;
-use cli::Cli;
+use cli::{Cli, Cmds, ProjectsAction};
 
+mod api;
 mod cli;
 
-const USER_AGENT: &str = concat!(
-    "paul8711-code/",
-    env!("CARGO_PKG_NAME"),
-    "/",
-    env!("CARGO_PKG_VERSION"),
-    " (",
-    env!("CARGO_PKG_AUTHORS"),
-    ")"
-);
-
-const API: &str = "https://api.modrinth.com";
-
 fn main() {
-    let cli = Cli::parse();
-    println!("{}", USER_AGENT);
-    let client = reqwest::blocking::Client::builder()
-        .user_agent(USER_AGENT)
-        .build()
-        .unwrap();
-    let response = client
-        .get(format!("{}/v2/search", API))
-        // search for create mod and only return the first result
-        .query(&[("query", "Create"), ("limit", "1")])
-        .send()
-        .unwrap()
-        .text()
-        .unwrap();
+    let c = Cli::parse();
 
-    println!("{:?}", response);
+    match c.cmd {
+        Cmds::Projects { action } => match action {
+            ProjectsAction::Search { query } => {
+                let response = match api::search(&query) {
+                    Ok(r) => r,
+                    Err(e) => {
+                        println!("{:?}", e);
+                        std::process::exit(1);
+                    }
+                };
+                println!("{:?}", response);
+            }
+        },
+    }
 }
