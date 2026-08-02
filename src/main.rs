@@ -1,3 +1,8 @@
+use clap::Parser;
+use cli::Cli;
+
+mod cli;
+
 const USER_AGENT: &str = concat!(
     "paul8711-code/",
     env!("CARGO_PKG_NAME"),
@@ -11,6 +16,7 @@ const USER_AGENT: &str = concat!(
 const API: &str = "https://api.modrinth.com";
 
 fn main() {
+    let cli = Cli::parse();
     println!("{}", USER_AGENT);
     let client = reqwest::blocking::Client::builder()
         .user_agent(USER_AGENT)

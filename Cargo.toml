@@ -7,8 +7,12 @@ authors = ["Paul8711 <contact@paul8711.com>"]
 license = "AGPL-3.0-only"
 repository = "https://github.com/paul8711-code/modrinth-cli"
 
+[[bin]]
+name = "mr"
+path = "src/main.rs"
+
 [dependencies]
-clap = "4.6.5"
+clap = { version = "4.6.5", features = ["derive"] }
 dialoguer = "0.12.0"
 ratatui = "0.30.2"
 reqwest = { version = "0.13.4", features = ["blocking", "query"] }
