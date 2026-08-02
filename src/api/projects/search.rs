@@ -88,16 +88,11 @@ pub fn search(query: &str) -> Result<SearchResponse, reqwest::Error> {
     // (needs to be put in enum and validated)
     let facets = None;
 
-    let mut q = vec![("query", query)];
+    let mut q = vec![("query", query), ("index", index), ("offset", offset), ("limit", limit)];
     // will be an enum, could be none
     if let Some(facets) = facets {
         q.push(("facets", facets));
     }
-    // will be an enum with default value, will never be an option
-    q.push(("index", index));
-    // will have defaults set
-    q.push(("offset", offset));
-    q.push(("limit", limit));
 
     // check for 200/400 error
     client
