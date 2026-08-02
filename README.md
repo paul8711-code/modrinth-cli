@@ -1,2 +1,3 @@
 # modrinth-cli
-Modrinth App as a CLI including most of the features
+
+Modrinth App as a CLI in Rust including most of the important features
