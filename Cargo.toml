@@ -8,3 +8,7 @@ license = "AGPL-3.0-only"
 repository = "https://github.com/paul8711-code/modrinth-cli"
 
 [dependencies]
+clap = "4.6.5"
+dialoguer = "0.12.0"
+ratatui = "0.30.2"
+reqwest = { version = "0.13.4", features = ["blocking", "query"] }
