@@ -96,7 +96,7 @@ pub fn search(query: &str) -> Result<SearchResponse, reqwest::Error> {
     // will be an enum with default value, will never be an option
     q.push(("index", index));
     // will have defaults set
-    q.push(("offet", offset));
+    q.push(("offset", offset));
     q.push(("limit", limit));
 
     // check for 200/400 error
