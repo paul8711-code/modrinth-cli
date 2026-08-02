@@ -1,5 +1,6 @@
 use super::{API, USER_AGENT};
 use clap::ValueEnum;
+use reqwest::StatusCode;
 use serde::{Deserialize, Serialize};
 
 #[derive(Deserialize, Debug)]
@@ -340,7 +341,6 @@ pub fn search(
     let offset = offset.to_string();
     let limit = limit.to_string();
 
-    // TODO: check for 200/400 error
     client
         .get(format!("{}/v2/search", API))
         .query(&[("query", query), ("offset", &offset), ("limit", &limit)])
