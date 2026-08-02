@@ -18,7 +18,6 @@
 
 use super::{API, USER_AGENT};
 use clap::ValueEnum;
-use reqwest::StatusCode;
 use serde::{Deserialize, Serialize};
 
 #[derive(Deserialize, Debug)]
