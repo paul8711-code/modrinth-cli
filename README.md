@@ -1,3 +1,3 @@
 # modrinth-cli
 
-Modrinth App as a CLI in Rust including most of the important features
+An easy-to-use, powerful Rust CLI to manage your local Minecraft instances and Modrinth mods
