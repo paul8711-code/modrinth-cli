@@ -11,6 +11,4 @@ const USER_AGENT: &str = concat!(
 const API: &str = "https://api.modrinth.com";
 
 // api endpoints
-mod projects;
-
-pub use projects::search;
+pub mod projects;

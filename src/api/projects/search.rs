@@ -1,5 +1,6 @@
 use super::{API, USER_AGENT};
-use serde::Deserialize;
+use clap::ValueEnum;
+use serde::{Deserialize, Serialize};
 
 #[derive(Deserialize, Debug)]
 pub struct SearchResponse {
@@ -69,12 +70,23 @@ pub enum MonetizationStatus {
     ForceDemonetized,
 }
 
-pub fn search(query: &str) -> Result<SearchResponse, reqwest::Error> {
+#[derive(Default, Serialize, Clone, Debug, PartialEq, ValueEnum)]
+#[serde(rename_all = "lowercase")]
+#[clap(rename_all = "kebab-case")]
+pub enum Sort {
+    #[default]
+    Relevance,
+    Downloads,
+    Follows,
+    Newest,
+    Updated,
+}
+
+pub fn search(query: &str, sort: Sort) -> Result<SearchResponse, reqwest::Error> {
     let client = reqwest::blocking::Client::builder()
         .user_agent(USER_AGENT)
         .build()?;
 
-    let index = "relevance";
     let offset = "0";
     let limit = "1";
     // SUPPORTED BY US:
@@ -88,7 +100,7 @@ pub fn search(query: &str) -> Result<SearchResponse, reqwest::Error> {
     // (needs to be put in enum and validated)
     let facets = None;
 
-    let mut q = vec![("query", query), ("index", index), ("offset", offset), ("limit", limit)];
+    let mut q = vec![("query", query), ("offset", offset), ("limit", limit)];
     // will be an enum, could be none
     if let Some(facets) = facets {
         q.push(("facets", facets));
@@ -98,6 +110,7 @@ pub fn search(query: &str) -> Result<SearchResponse, reqwest::Error> {
     client
         .get(format!("{}/v2/search", API))
         .query(&q)
+        .query(&[("index", sort)])
         .send()?
         .json()
 }

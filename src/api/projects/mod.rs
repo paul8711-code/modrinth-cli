@@ -1,5 +1,5 @@
-use super::{USER_AGENT, API};
+use super::{API, USER_AGENT};
 
-mod search;
+pub mod search;
 
 pub use search::search;

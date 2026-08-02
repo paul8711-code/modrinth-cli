@@ -16,6 +16,7 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+use crate::api::projects::search::Sort;
 use clap::{Parser, Subcommand};
 
 #[derive(Parser)]
@@ -36,5 +37,9 @@ pub enum Cmds {
 
 #[derive(Subcommand)]
 pub enum ProjectsAction {
-    Search { query: String },
+    Search {
+        query: String,
+        #[arg(short, long, value_enum, default_value = "relevance")]
+        sort: Sort,
+    },
 }
