@@ -19,6 +19,8 @@
 use clap::Parser;
 use cli::{Cli, Cmds, ProjectsAction};
 
+use api::projects::search::Filter;
+
 mod api;
 mod cli;
 
@@ -27,8 +29,59 @@ fn main() {
 
     match c.cmd {
         Cmds::Projects { action } => match action {
-            ProjectsAction::Search { query, sort } => {
-                let response = match api::projects::search(&query, sort, 0, 1, &[]) {
+            ProjectsAction::Search {
+                query,
+                sort,
+                loader,
+                category,
+                project_type,
+                version,
+                client_side,
+                server_side,
+            } => {
+                let loader: Vec<Filter> = loader
+                    .into_iter()
+                    .map(|l| Filter::Loader(l.clone()))
+                    .collect();
+
+                let category: Vec<Filter> = category
+                    .into_iter()
+                    .map(|c| Filter::Category(c.clone()))
+                    .collect();
+
+                let project_type: Vec<Filter> = project_type
+                    .into_iter()
+                    .map(|p| Filter::ProjectType(p.clone()))
+                    .collect();
+
+                let version: Vec<Filter> = version
+                    .into_iter()
+                    .map(|v| Filter::Version(v.clone()))
+                    .collect();
+
+                let client_side: Vec<Filter> = if client_side {
+                    vec![Filter::ClientSide]
+                } else {
+                    Vec::new()
+                };
+
+                let server_side: Vec<Filter> = if server_side {
+                    vec![Filter::ServerSide]
+                } else {
+                    Vec::new()
+                };
+
+                let filter: Vec<Filter> = [
+                    loader,
+                    category,
+                    project_type,
+                    version,
+                    client_side,
+                    server_side,
+                ]
+                .concat();
+
+                let response = match api::projects::search(&query, sort, 0, 1, &filter) {
                     Ok(r) => r,
                     Err(e) => {
                         println!("{:?}", e);

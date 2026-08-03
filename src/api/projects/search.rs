@@ -279,9 +279,9 @@ pub enum Filter {
     Loader(Loader),
     Category(Category),
     Version(String),
-    // if omitted: no filter, if false: optional filter, if true: required filter
-    ServerSide(bool),
-    ClientSide(bool),
+    // if omitted: no filter, if existing: required filter
+    ServerSide,
+    ClientSide,
     ProjectType(ProjectType),
 }
 
@@ -296,14 +296,8 @@ impl Filter {
             }
             // dont need to validate, api returns nothing when non existent
             Filter::Version(ver) => format!("versions:{ver}"),
-            Filter::ServerSide(req) => {
-                let status = if *req { "required" } else { "optional" };
-                format!("server_side:{status}")
-            }
-            Filter::ClientSide(req) => {
-                let status = if *req { "required" } else { "optional" };
-                format!("client_side:{status}")
-            }
+            Filter::ServerSide => "server_side:required".to_string(),
+            Filter::ClientSide => "client_side:required".to_string(),
             Filter::ProjectType(p_type) => {
                 format!("all_project_types:{}", p_type.to_slug())
             }
