@@ -14,5 +14,6 @@ path = "src/main.rs"
 [dependencies]
 clap = { version = "4.6.5", features = ["derive"] }
 dialoguer = "0.12.0"
-ferinth = "2.13.1"
+ferinth = { git = "https://github.com/paul8711-code/ferinth.git" }
 ratatui = "0.30.2"
+tokio = { version = "1.53.1", features = ["full"] }
