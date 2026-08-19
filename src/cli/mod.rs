@@ -18,6 +18,8 @@
 
 use clap::{Parser, Subcommand};
 
+pub mod types;
+
 #[derive(Parser)]
 #[command(author, version, about)]
 pub struct Cli {
@@ -26,4 +28,30 @@ pub struct Cli {
 }
 
 #[derive(Subcommand)]
-pub enum Cmds {}
+pub enum Cmds {
+    Project {
+        #[command(subcommand)]
+        action: ProjectAction,
+    },
+}
+
+#[derive(Subcommand)]
+pub enum ProjectAction {
+    Search {
+        query: String,
+        #[arg(short, long, value_enum, default_value = "relevance")]
+        sort: types::Sort,
+        #[arg(short, long, value_enum)]
+        loader: Vec<types::Loader>,
+        #[arg(short, long, value_enum)]
+        category: Vec<types::Category>,
+        #[arg(short, long, value_enum)]
+        project_type: Option<types::ProjectType>,
+        #[arg(short, long)]
+        version: Vec<String>,
+        #[arg(long)]
+        client_side: bool,
+        #[arg(long)]
+        server_side: bool,
+    },
+}

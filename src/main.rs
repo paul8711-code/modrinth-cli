@@ -17,11 +17,12 @@
 */
 
 use clap::Parser;
-use cli::{Cli, Cmds};
+use cli::{Cli, Cmds, ProjectAction};
 
 mod cli;
 
-fn main() {
+#[tokio::main]
+async fn main() {
     let c = Cli::parse();
 
     let modrinth = ferinth::Ferinth::<()>::new(
@@ -29,4 +30,38 @@ fn main() {
         Some(env!("CARGO_PKG_VERSION")),
         Some(env!("CARGO_PKG_AUTHORS")),
     );
+
+    match c.cmd {
+        Cmds::Project { action } => match action {
+            ProjectAction::Search {
+                query,
+                sort,
+                loader,
+                category,
+                project_type,
+                version,
+                client_side,
+                server_side,
+            } => {
+                let response = modrinth
+                    .search_paged(
+                        &query,
+                        sort.into(),
+                        1,
+                        0,
+                        cli::types::into_facets(
+                            loader,
+                            category,
+                            project_type,
+                            version,
+                            client_side,
+                            server_side,
+                        ),
+                    )
+                    .await
+                    .unwrap();
+                println!("{:?}", response);
+            }
+        },
+    }
 }
