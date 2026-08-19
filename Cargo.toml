@@ -14,6 +14,7 @@ path = "src/main.rs"
 [dependencies]
 clap = { version = "4.6.5", features = ["derive"] }
 dialoguer = "0.12.0"
+ferinth = "2.13.1"
 ratatui = "0.30.2"
 reqwest = { version = "0.13.4", features = ["blocking", "json", "query"] }
 serde = { version = "1.0.229", features = ["derive"] }

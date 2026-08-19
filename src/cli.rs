@@ -16,7 +16,6 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-use crate::api::projects::search::{Category, Loader, ProjectType, Sort};
 use clap::{Parser, Subcommand};
 
 #[derive(Parser)]
@@ -26,32 +25,5 @@ pub struct Cli {
     pub cmd: Cmds,
 }
 
-// One command for each modrinth api endpoint (some might get merged/renamed)
 #[derive(Subcommand)]
-pub enum Cmds {
-    Projects {
-        #[command(subcommand)]
-        action: ProjectsAction,
-    },
-}
-
-#[derive(Subcommand)]
-pub enum ProjectsAction {
-    Search {
-        query: String,
-        #[arg(short, long, value_enum, default_value = "relevance")]
-        sort: Sort,
-        #[arg(short, long, value_enum)]
-        loader: Vec<Loader>,
-        #[arg(short, long, value_enum)]
-        category: Vec<Category>,
-        #[arg(short, long, value_enum)]
-        project_type: Vec<ProjectType>,
-        #[arg(short, long)]
-        version: Vec<String>,
-        #[arg(long)]
-        client_side: bool,
-        #[arg(long)]
-        server_side: bool,
-    },
-}
+pub enum Cmds {}
